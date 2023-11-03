@@ -41,3 +41,23 @@
   - - useEffect()
   - - start timer => make api call after 200 ms
       \*/
+
+### Caching
+
+Time complexity to search for an array = O(n)
+
+[i, ip, iph, ipho, iphon, iphone]
+
+Time complexity of search for an object/map = O(1)
+
+{
+i:
+ip:
+iph:
+ipho:
+iphon:
+iphone:
+}
+
+new Map() -> even more optimized than searching inside Object.
+For simplicity we will use object here.

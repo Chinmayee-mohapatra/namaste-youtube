@@ -3,21 +3,39 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { BsSearch } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
+
 const Header = () => {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   // console.log(searchQuery);
 
   const [suggesstions, setSuggesstions] = useState([]);
   const [showSuggesstions, setShowSuggesstions] = useState(false);
 
+  // subscribe to the cache
+  const searchCache = useSelector((store) => store.search);
+
+  /**
+   * {
+   *  "iphone" : ["iphone 11", "iphone pro max", "iphone 14"]
+   * }
+   *
+   */
   useEffect(() => {
     // make an API call after every key press.
     // but if the diffrn b/w 2 API calls is <200ms then decline the API call.
 
-    const timer = setTimeout(() => getSearchSuggestions(), 200);
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery]) {
+        setSuggesstions(searchCache[searchQuery]);
+      } else {
+        getSearchSuggestions();
+      }
+    }, 200);
 
     return () => {
       clearTimeout(timer);
@@ -27,11 +45,16 @@ const Header = () => {
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
-    console.log(json[1]);
+    // console.log(json[1]);
     setSuggesstions(json[1]);
-  };
 
-  const dispatch = useDispatch();
+    // update the cache
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
+  };
 
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());

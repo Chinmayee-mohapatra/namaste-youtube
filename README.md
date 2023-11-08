@@ -61,3 +61,24 @@ iphone:
 
 new Map() -> even more optimized than searching inside Object.
 For simplicity we will use object here.
+
+### Live chatting
+
+Live Chatting >>>>>>> Infinite scrolling >>>>>>>> Pagination
+
+- challenges of live chat:
+  -> Get data live -- Data Layer
+  -> Update the chat window (UI)
+
+Update UI in an efficient way so that the page doesnot freeze even after loading the live stream data for a longer period of time.
+
+- Two ways to handle LIVE data
+  -> Using Web Sockets - 2 way connection that creates a handshake. Once done we can send data from either side, i.e. bi-directional. No regular inerval.
+
+  -> API polling - UI request the server for data and the server sends the data. Uni-directional data. In regular interval the data is polled
+
+---
+
+- In an application like GMail, API polling can be used as e dont need very real time data . Its okay if the reciver gets the mail after 10 seconds. Eg: Crickbuzz - API polling happens in "25 seconds".
+
+- If there is application like stock market apps, Here we need very real time data. Eg: Live chat applications need real time data.

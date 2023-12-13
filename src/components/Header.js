@@ -11,8 +11,6 @@ import { cacheResults } from "../utils/searchSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  // console.log(searchQuery);
-
   const [suggesstions, setSuggesstions] = useState([]);
   const [showSuggesstions, setShowSuggesstions] = useState(false);
 
@@ -45,7 +43,6 @@ const Header = () => {
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
-    // console.log(json[1]);
     setSuggesstions(json[1]);
 
     // update the cache
@@ -91,7 +88,7 @@ const Header = () => {
             <BsSearch />
           </button>
         </div>
-        {showSuggesstions && (
+        {suggesstions.length !== 0 && showSuggesstions && (
           <div className="absolute z-10 left-[36%] bg-white shadow-md border border-gray-50 rounded-lg py-2 px-2 w-[33rem]">
             <ul>
               {suggesstions.map((s) => (
